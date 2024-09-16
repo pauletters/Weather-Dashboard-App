@@ -6,8 +6,10 @@ dotenv.config();
 
 // TODO: Define an interface for the Coordinates object
 interface Coordinates {
-  lat: number;
-  lon: number;
+  coord: {
+    lat: number;
+    lon: number;
+  }
 };
 
 // TODO: Define a class for the Weather object
@@ -25,11 +27,11 @@ class Weather {
 // TODO: Complete the WeatherService class
 class WeatherService {
   // TODO: Define the baseURL, API key, and city name properties
-  constructor(public baseURL: string, public APIKey: string, public city: string) {
+  constructor(public baseURL: string, public APIKey: string, public cityName: string) {
     // this.baseURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${APIKey}`;
     this.baseURL = '';
     this.APIKey = "259a8e3ddfa5c548f2184c002298c61f";
-    this.city = city;
+    this.cityName = cityName;
   }
 
   
@@ -49,26 +51,25 @@ class WeatherService {
   
   // TODO: Create destructureLocationData method
    private destructureLocationData(locationData: Coordinates): Coordinates {
-    const { lat, lon } = locationData;
-    return { lat, lon };
+    const { lat, lon } = locationData.coord;
+    return { coord: { lat, lon } };
    }
   
   // TODO: Create buildGeocodeQuery method
     private buildGeocodeQuery(): string {
-      return `https://api.openweathermap.org/data/2.5/weather?q=${this.city}&appid=${this.APIKey}`;
+      return `https://api.openweathermap.org/data/2.5/weather?q=${this.cityName}&appid=${this.APIKey}`;
     }
     
   
   // TODO: Create buildWeatherQuery method
    private buildWeatherQuery(coordinates: Coordinates): string {
-      return `https://api.openweathermap.org/data/2.5/forecast?lat=${coordinates.lat}&lon=${coordinates.lon}&appid=${this.APIKey}`;
+      console.log('coordinates', coordinates);
+      return `https://api.openweathermap.org/data/2.5/forecast?lat=${coordinates.coord.lat}&lon=${coordinates.coord.lon}&appid=${this.APIKey}`;
   }
   
   // TODO: Create fetchAndDestructureLocationData method
    private async fetchAndDestructureLocationData(_city: string) {
-      // use the new baseUrl to make the call to the weather API
-      // return the destructured location data
-      const locationData = await this.fetchLocationData(this.city);
+      const locationData = await this.fetchLocationData(this.cityName);
       const destructure = this.destructureLocationData(locationData);
       return destructure;
    }
@@ -78,8 +79,6 @@ class WeatherService {
     const baseURL = this.buildWeatherQuery(coordinates);
     const weather = await fetch(baseURL);
     
-    this.buildWeatherQuery(coordinates);
-    
     return weather.json();
    }
   
@@ -87,7 +86,7 @@ class WeatherService {
    private parseCurrentWeather(response: any) {
     const { main, weather, wind } = response.list[0];
     const current = {
-      temperature: main.temp,
+      temperature: main.temperature,
       humidity: main.humidity,
       windSpeed: wind.speed,
       weather: weather[0].description,
@@ -104,7 +103,7 @@ class WeatherService {
      forecastArray = weatherData.list.map((day: any) => {
       return {
         date: day.dt,
-        temperature: day.main.day,
+        temperature: day.main.temperature,
         humidity: day.main.humidity,
         windSpeed: day.wind.speed,
         weather: day.weather[0].description,
@@ -119,10 +118,12 @@ class WeatherService {
   // TODO: Complete getWeatherForCity method
    async getWeatherForCity(city: string) {
      const location = await this.fetchAndDestructureLocationData(city);
-    const weather = await this.fetchWeatherData(location);
+     const weather = await this.fetchWeatherData(location);
      const currentWeather = this.parseCurrentWeather(weather);
      const forecast = this.buildForecastArray(currentWeather, weather);
-     
+
+     console.log('forecast', forecast);
+
      return forecast;
     
    }
