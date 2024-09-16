@@ -9,8 +9,8 @@ interface Coordinates {
   coord: {
     lat: number;
     lon: number;
-  }
-};
+  };
+}
 
 // TODO: Define a class for the Weather object
 class Weather {
