@@ -17,6 +17,8 @@ I created this weather dashboard application to allow users to search the weathe
 N/A
 
 ## Usage
+
+https://weather-dashboard-app-jc5a.onrender.com
 To use, simply click the link above to bring up the application. You will then be prompted to enter the city name in a search bar.  Enter the name of your city and a current weather forecast will be presented along with the five day forecast of that city. It will also automatially add that city to your search history so that you can quickly check it again in the future. All saved search history cities can also be deleted by simply clicking the trash can to the right of the name.
 
 
