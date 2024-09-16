@@ -258,6 +258,7 @@ const handleSearchFormSubmit = (event: any): void => {
 
   const search: string = searchInput.value.trim();
   fetchWeather(search).then(() => {
+    console.log('hello');
     getAndRenderHistory();
   });
   searchInput.value = '';

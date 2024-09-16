@@ -23,7 +23,13 @@ class HistoryService {
   // TODO: Define a getCities method that reads the cities from the searchHistory.json file and returns them as an array of City objects
    async getCities() {
       const cities = await this.read();
-      return cities.map((city: { name: string; id: number; }) => new City(city.name, city.id));
+      console.log(cities);
+      if (cities.length === 0) {
+         console.log('No cities found');
+        return [];
+      } else {
+         console.log('Cities found');
+      return cities.map((city: { name: string; id: number; }) => new City(city.name, city.id))}
    }
   
   // TODO Define an addCity method that adds a city to the searchHistory.json file
