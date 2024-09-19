@@ -81,7 +81,7 @@ class WeatherService implements IWeatherService {
     
     // Filter to get the next 5 days of weather
     const filteredDays = forecastResult.list.filter((_: any, index: number) => {
-      return index % 8 === 0;
+      return (index + 1) % 8 === 0;
     }).slice(0, 5);
 
     // This is mapping the filtered days to the Weather class
