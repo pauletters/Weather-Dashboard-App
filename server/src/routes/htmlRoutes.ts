@@ -5,7 +5,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const router = Router();
 
-// TODO: Define route to serve index.html
+// This is the route that sends the index.html file
 router.get('/', (_, res) => {
   const indexPath = path.join(__dirname, '../../../client/dist/index.html');
   res.sendFile(indexPath, (err) => {
